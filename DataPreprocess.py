@@ -12,8 +12,8 @@ import pandas as pd
 
 #Importing the dataset
 dataset = pd.read_csv('!BoreliozAnaliza.csv')
-X = pd.DataFrame(dataset.iloc[:, :-1].values)
-y = pd.DataFrame(dataset.iloc[:, 3].values)
+X = pd.DataFrame(dataset.iloc[:, :-3].values)
+y = pd.DataFrame(dataset.iloc[:, 63].values)
 
 #Taking care of missing data
 '''
