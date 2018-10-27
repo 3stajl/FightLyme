@@ -17,6 +17,7 @@ X = X.drop([26], axis='columns')
 
 y = pd.DataFrame(dataset.iloc[:, 28].values)
 
+
 #Taking care of missing data
 
 from sklearn.preprocessing import Imputer
@@ -45,15 +46,24 @@ labelencoder_y = LabelEncoder()
 y = labelencoder_X.fit_transform(y)
 '''
 
+from keras.utils.np_utils import to_categorical
+y_binary = to_categorical(y)
+
+
 # Splitting the dataset into the Training set and Test set
 from sklearn.model_selection import train_test_split
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.2, random_state = 0)
+X_train, X_test, y_train, y_test = train_test_split(X, y_binary, test_size = 0.2, random_state = 0)
 
 # Feature Scaling
 from sklearn.preprocessing import StandardScaler
 sc = StandardScaler()
 X_train = sc.fit_transform(X_train)
 X_test = sc.transform(X_test)
+
+# Tips:
+  
+
+
 
 
 # PREDICTING
@@ -67,19 +77,19 @@ from keras.layers import Dense
 classifier = Sequential()
 
 # Adding the input layer and the first hidden layer
-classifier.add(Dense(units = 6, kernel_initializer = 'uniform', activation = 'relu', input_dim = 156))
+classifier.add(Dense(units = 32, kernel_initializer = 'uniform', activation = 'relu', input_dim = 156))
 
 # Adding the second hidden layer
-classifier.add(Dense(units = 6, kernel_initializer = 'uniform', activation = 'relu'))
+classifier.add(Dense(units = 64, kernel_initializer = 'uniform', activation = 'relu'))
 
 # Adding the output layer
-classifier.add(Dense(units = 1, kernel_initializer = 'uniform', activation = 'softmax'))
+classifier.add(Dense(units = 11, kernel_initializer = 'uniform', activation = 'softmax'))
 
 # Compiling the ANN
 classifier.compile(optimizer = 'adam', loss = 'categorical_crossentropy', metrics = ['accuracy'])
 
 # Fitting the ANN to the Training set
-classifier.fit(np.array(X_train), np.array(y_train), batch_size = 10, epochs = 100)
+classifier.fit(np.array(X_train), np.array(y_train), batch_size = 32, epochs = 1000)
 
 # Part 3 - Making predictions and evaluating the model
 
