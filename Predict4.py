@@ -77,10 +77,10 @@ from keras.layers import Dense
 classifier = Sequential()
 
 # Adding the input layer and the first hidden layer
-classifier.add(Dense(units = 32, kernel_initializer = 'uniform', activation = 'relu', input_dim = 156))
+classifier.add(Dense(units = 156, kernel_initializer = 'uniform', activation = 'relu', input_dim = 156))
 
 # Adding the second hidden layer
-classifier.add(Dense(units = 64, kernel_initializer = 'uniform', activation = 'relu'))
+classifier.add(Dense(units = 312, kernel_initializer = 'uniform', activation = 'relu'))
 
 # Adding the output layer
 classifier.add(Dense(units = 11, kernel_initializer = 'uniform', activation = 'softmax'))
@@ -95,7 +95,9 @@ classifier.fit(np.array(X_train), np.array(y_train), batch_size = 32, epochs = 1
 
 # Predicting the Test set results
 y_pred = classifier.predict(X_test)
-'''y_pred = (y_pred > 0.5)'''
 
+score = classifier.evaluate(X_test, y_test)
+print('Test loss:', score[0])
+print('Test accuracy:', score[1])
 
 
