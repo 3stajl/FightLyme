@@ -21,9 +21,9 @@ len(df.columns)
 #removing irrelevant columns
 df = df.drop(['Unnamed: 64', 'Unnamed: 65'], axis='columns')
 
-#changing columns names to shorter
+#shortening columns names
 colnames = 'record_time,blood,infection,residence,start_treat'.split(',')
-treatments = 'doxy,ilads,buhner,cowden,liposomal,other_herbs,vitaminD,supp,oil,kambo,plasma,sugar-free,gluten-free,dairy-free,bioresonance,antimicrobial,oxygen,cannabis,binaural'.split(',')
+treatments = 'doxy,ilads,buhner,cowden,liposomal,other_herbs,vitaminD,supp,oil,kambo,plasma,sugar-free,gluten-free,dairy-free,bioresonance,antimicrobial,oxygen,cannabis_oil,binaural'.split(',')
 colnames.extend(treatments)
 stimulants = 'tobacco,alcohol,coffee,marijuana,other_stim'.split(',')
 colnames.extend(stimulants)
@@ -39,7 +39,7 @@ df = df.drop([21,22,28,30,50,68,105,106,110,122])
 #dealing  with Nan
 df.iloc[:,:-1] = df.iloc[:,:-1].apply(lambda x: pd.factorize(x)[0])
 
-X=df[['start_treat','doxy','ilads','buhner','cowden','liposomal','other_herbs','vitaminD','supp','oil','sugar-free','gluten-free','dairy-free','bioresonance','antimicrobial','oxygen','cannabis','binaural','tobacco','alcohol','coffee','marijuana','other_stim','num_antibiotics','method_antibiotics']].values
+X=df[['start_treat','doxy','ilads','buhner','cowden','liposomal','other_herbs','vitaminD','supp','oil','sugar-free','gluten-free','dairy-free','bioresonance','antimicrobial','oxygen','cannabis_oil','binaural','tobacco','alcohol','coffee','marijuana','other_stim','num_antibiotics','method_antibiotics']].values
 y=df['effective'].values
 
 #Future Scaling
@@ -77,7 +77,7 @@ cross_val_score(model, X, y, cv=3, scoring='neg_mean_absolute_error')
 model = RandomForestRegressor(max_depth=15, n_estimators=25, n_jobs=8)
 model.fit(X,y_binary)
 feats = {}
-for feature, importance in zip(df[['start_treat','doxy','ilads','buhner','cowden','liposomal','other_herbs','vitaminD','supp','oil','sugar-free','gluten-free','dairy-free','bioresonance','antimicrobial','oxygen','cannabis','binaural','tobacco','alcohol','coffee','marijuana','other_stim','num_antibiotics','method_antibiotics']], model.feature_importances_):
+for feature, importance in zip(df[['start_treat','doxy','ilads','buhner','cowden','liposomal','other_herbs','vitaminD','supp','oil','sugar-free','gluten-free','dairy-free','bioresonance','antimicrobial','oxygen','cannabis_oil','binaural','tobacco','alcohol','coffee','marijuana','other_stim','num_antibiotics','method_antibiotics']], model.feature_importances_):
     feats[feature] = importance #add the name/value pair 
 scores = cross_val_score(model, X, y_binary, cv=3, scoring='neg_mean_absolute_error')
 np.mean(scores), np.std(scores)
