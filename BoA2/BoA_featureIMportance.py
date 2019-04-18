@@ -54,9 +54,6 @@ imputerY = imputerY.fit(y)
 y = imputer.transform(y)
 '''
 
-
-
-
 from sklearn.preprocessing import StandardScaler
 sc = StandardScaler()
 X = sc.fit_transform(X)
@@ -72,9 +69,8 @@ model = DecisionTreeRegressor(max_depth=10)
 cross_val_score(model, X, y, cv=3, scoring='neg_mean_absolute_error')
 '''
 
-
-
 model = RandomForestRegressor(max_depth=15, n_estimators=25, n_jobs=8)
+
 model.fit(X,y_binary)
 feats = {}
 for feature, importance in zip(df[['start_treat','doxy','ilads','buhner','cowden','liposomal','other_herbs','vitaminD','supp','oil','sugar-free','gluten-free','dairy-free','bioresonance','antimicrobial','oxygen','cannabis_oil','binaural','tobacco','alcohol','coffee','marijuana','other_stim','num_antibiotics','method_antibiotics']], model.feature_importances_):
@@ -84,24 +80,19 @@ np.mean(scores), np.std(scores)
 
 
 
-#model.fit(X,y_binary)
+#adding feature importances
 MostImportant = model.feature_importances_
-'''
-feats = {} # a dict to hold feature_name: feature_importance
-for feature, importance in zip(df.columns, model.feature_importances_):
-   feats[feature] = importance #add the name/value pair 
-'''
 
 importances = pd.DataFrame.from_dict(feats, orient='index').rename(columns={0: 'Gini-importance'})
 importances.sort_values(by='Gini-importance').plot(kind='bar', rot=90)
+
+#predicting
 model.predict(X)
 y_pred = model.predict(X)
 
-'''
-import keras
-from keras.utils.np_utils import to_categorical
-y_binary = to_categorical(y)
 
+#ANN aproach
+'''
 from sklearn.model_selection import train_test_split
 X_train, X_test, y_train, y_test = train_test_split(X, y_binary, test_size = 0.2, random_state = 0)
 
