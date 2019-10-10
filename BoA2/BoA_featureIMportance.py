@@ -42,17 +42,6 @@ df.iloc[:,:-1] = df.iloc[:,:-1].apply(lambda x: pd.factorize(x)[0])
 X=df[['start_treat','doxy','ilads','buhner','cowden','liposomal','other_herbs','vitaminD','supp','oil','sugar-free','gluten-free','dairy-free','bioresonance','antimicrobial','oxygen','cannabis_oil','binaural','tobacco','alcohol','coffee','marijuana','other_stim','num_antibiotics','method_antibiotics']].values
 y=df['effective'].values
 
-#Future Scaling
-'''
-from sklearn.impute import SimpleImputer
-imputer = SimpleImputer(missing_values='NaN',strategy='mean')
-imputer = imputer.fit(X)
-X = imputer.transform(X)
-
-imputerY = SimpleImputer(missing_values='NaN',strategy='mean')
-imputerY = imputerY.fit(y)
-y = imputer.transform(y)
-'''
 
 from sklearn.preprocessing import StandardScaler
 sc = StandardScaler()
@@ -78,8 +67,6 @@ for feature, importance in zip(df[['start_treat','doxy','ilads','buhner','cowden
 scores = cross_val_score(model, X, y_binary, cv=3, scoring='neg_mean_absolute_error')
 np.mean(scores), np.std(scores)
 
-
-
 #adding feature importances
 MostImportant = model.feature_importances_
 
@@ -99,7 +86,6 @@ X_train, X_test, y_train, y_test = train_test_split(X, y_binary, test_size = 0.2
 '''
 
 '''
-import keras
 from keras.models import Sequential
 from keras.layers import Dense
 
